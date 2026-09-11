@@ -16,7 +16,7 @@ export default function App() {
   const [promiseOpen, setPromiseOpen] = React.useState(false);
   const [calendarOpen, setCalendarOpen] = React.useState(false);
   const [result, setResult] = React.useState<{
-    date: string;
+    dates: string[];
     summary: string;
     icsUrl: string;
   } | null>(null);
@@ -45,8 +45,9 @@ export default function App() {
       }
 
       setResult({
-        date: payload.date,
-        summary: data.summary ?? summarize(payload.activities, payload.otherText),
+        dates: payload.dates,
+        summary:
+          data.summary ?? summarize(payload.activities, payload.otherText),
         icsUrl: data.icsUrl ?? "",
       });
       setPromiseOpen(true);
@@ -82,7 +83,7 @@ export default function App() {
 
       <PromiseDialog
         open={promiseOpen}
-        date={result?.date ?? ""}
+        dates={result?.dates ?? []}
         summary={result?.summary ?? ""}
         onNext={() => {
           setPromiseOpen(false);

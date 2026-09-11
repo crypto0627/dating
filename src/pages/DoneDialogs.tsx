@@ -8,17 +8,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Confetti } from "@/components/Confetti";
-import { formatFull } from "@/lib/date";
+import { formatDatesFull } from "@/lib/date";
 
 /** 步驟一：約定成立 */
 export function PromiseDialog({
   open,
-  date,
+  dates,
   summary,
   onNext,
 }: {
   open: boolean;
-  date: string;
+  dates: string[];
   summary: string;
   onNext: () => void;
 }) {
@@ -46,7 +46,9 @@ export function PromiseDialog({
           </DialogHeader>
 
           <div className="rounded-2xl bg-white/65 px-4 py-3.5 text-center text-sm dark:bg-white/10">
-            <p className="font-semibold">{date ? formatFull(date) : ""}</p>
+            <p className="font-semibold">
+              {dates.length ? formatDatesFull(dates) : ""}
+            </p>
             <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
               {summary}
             </p>

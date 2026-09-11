@@ -12,11 +12,11 @@ import {
   OTHER_ID,
   toggleActivity,
 } from "@/lib/activities";
-import { formatFull } from "@/lib/date";
+import { formatShort, groupRanges } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 export type PlanPayload = {
-  date: string;
+  dates: string[];
   activities: string[];
   otherText: string;
   email: string;
@@ -33,7 +33,7 @@ export function PlanPage({
   submitting: boolean;
   serverError: string | null;
 }) {
-  const [date, setDate] = React.useState<string>("");
+  const [dates, setDates] = React.useState<string[]>([]);
   const [picked, setPicked] = React.useState<string[]>([]);
   const [otherText, setOtherText] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -42,6 +42,14 @@ export function PlanPage({
   const otherRef = React.useRef<HTMLInputElement | null>(null);
   const allSelected = BASE_IDS.every((id) => picked.includes(id));
   const hasOther = picked.includes(OTHER_ID);
+
+  function toggleDate(key: string) {
+    setDates((prev) =>
+      prev.includes(key)
+        ? prev.filter((d) => d !== key)
+        : [...prev, key].sort(),
+    );
+  }
 
   function toggle(id: string) {
     setPicked((prev) => toggleActivity(prev, id));
@@ -53,7 +61,7 @@ export function PlanPage({
 
   const chosenCount = picked.filter((p) => p !== OTHER_ID).length + (hasOther ? 1 : 0);
 
-  const dateError = !date ? "請挑一個日子" : null;
+  const dateError = dates.length === 0 ? "至少挑一個日子" : null;
   const activityError = chosenCount === 0 ? "至少選一個約會項目" : null;
   const otherError =
     hasOther && otherText.trim().length === 0 ? "「其他」要寫一下是什麼喔" : null;
@@ -68,7 +76,7 @@ export function PlanPage({
     setTouched(true);
     if (firstError) return;
     onSubmit({
-      date,
+      dates: [...dates].sort(),
       activities: picked,
       otherText: otherText.trim(),
       email: email.trim(),
@@ -119,13 +127,41 @@ export function PlanPage({
               <span
                 className={cn(
                   "text-xs",
-                  date ? "text-primary font-medium" : "text-muted-foreground",
+                  dates.length
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground",
                 )}
               >
-                {date ? formatFull(date) : "還沒選"}
+                {dates.length ? `已選 ${dates.length} 天` : "還沒選"}
               </span>
             </div>
-            <Calendar value={date} onChange={setDate} />
+
+            <Calendar value={dates} onToggle={toggleDate} />
+
+            {dates.length > 0 && (
+              <div className="animate-fade-up mt-4 border-t border-white/60 pt-4">
+                <div className="flex flex-wrap gap-1.5">
+                  {groupRanges(dates).map((r) => (
+                    <span
+                      key={r.start}
+                      className="text-primary rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium shadow-sm dark:bg-white/10"
+                    >
+                      {r.start === r.end
+                        ? formatShort(r.start)
+                        : `${formatShort(r.start)} – ${formatShort(r.end)}`}
+                    </span>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setDates([])}
+                    className="text-muted-foreground hover:text-destructive rounded-full px-2.5 py-1.5 text-xs transition-colors"
+                  >
+                    清除
+                  </button>
+                </div>
+              </div>
+            )}
+
             {touched && dateError && (
               <p className="text-destructive mt-3 text-xs">{dateError}</p>
             )}

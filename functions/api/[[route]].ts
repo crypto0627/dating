@@ -29,7 +29,13 @@ const OTHER_ID = "other";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
+/** 一次最多能約幾天，避免有人送 10000 天把信塞爆 */
+const MAX_DATES = 31;
+
 type DateBody = {
+  /** 新版：多天 */
+  dates?: unknown;
+  /** 舊版：單天（保留相容） */
   date?: unknown;
   activities?: unknown;
   otherText?: unknown;
@@ -97,6 +103,48 @@ function formatFull(key: string): string {
   return `${y} 年 ${m} 月 ${d} 日（週${WEEKDAY_TC[dow]}）`;
 }
 
+function formatShort(key: string): string {
+  const [y, m, d] = key.split("-").map(Number);
+  const dow = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  return `${m}/${d} (${WEEKDAY_TC[dow]})`;
+}
+
+function daysBetween(a: string, b: string): number {
+  const [y1, m1, d1] = a.split("-").map(Number);
+  const [y2, m2, d2] = b.split("-").map(Number);
+  return Math.round(
+    (Date.UTC(y2, m2 - 1, d2) - Date.UTC(y1, m1 - 1, d1)) / 86400000,
+  );
+}
+
+/** 排序後合併成連續區間 */
+function groupRanges(keys: string[]): { start: string; end: string }[] {
+  const sorted = [...new Set(keys)].sort();
+  const out: { start: string; end: string }[] = [];
+  for (const key of sorted) {
+    const last = out[out.length - 1];
+    if (last && daysBetween(last.end, key) === 1) last.end = key;
+    else out.push({ start: key, end: key });
+  }
+  return out;
+}
+
+/** 「9/20 (日) – 9/22 (二)、9/27 (日)」；單天則回完整寫法 */
+function formatDates(keys: string[]): string {
+  const ranges = groupRanges(keys);
+  if (ranges.length === 1 && ranges[0].start === ranges[0].end) {
+    return formatFull(ranges[0].start);
+  }
+  const text = ranges
+    .map((r) =>
+      r.start === r.end
+        ? formatShort(r.start)
+        : `${formatShort(r.start)} – ${formatShort(r.end)}`,
+    )
+    .join("、");
+  return `${text}（共 ${new Set(keys).size} 天）`;
+}
+
 function summarize(activities: string[], otherText: string): string {
   const bases = BASE_ORDER.filter((id) => activities.includes(id));
   const parts: string[] =
@@ -110,57 +158,101 @@ function summarize(activities: string[], otherText: string): string {
   return parts.join("・");
 }
 
-/** 隔天的 YYYYMMDD（全天事件的 DTEND 是排他的） */
-function nextDayCompact(key: string): string {
+/** key 往後 n 天的 YYYYMMDD（全天事件的 DTEND 是排他的，所以要 +1） */
+function shiftCompact(key: string, days: number): string {
   const [y, m, d] = key.split("-").map(Number);
   const dt = new Date(Date.UTC(y, m - 1, d));
-  dt.setUTCDate(dt.getUTCDate() + 1);
+  dt.setUTCDate(dt.getUTCDate() + days);
   const yy = dt.getUTCFullYear();
   const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
   const dd = String(dt.getUTCDate()).padStart(2, "0");
   return `${yy}${mm}${dd}`;
 }
 
+/**
+ * 產生行事曆檔。連續的日子會合併成一個跨日事件，
+ * 不連續的則各自成為一個事件（同一個 VCALENDAR 裡多個 VEVENT）。
+ */
 function buildIcs(opts: {
-  date: string;
+  dates: string[];
   summary: string;
   owner: string;
 }): string {
-  const compact = opts.date.replace(/-/g, "");
-  const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-  const uid = `${compact}-${Math.random().toString(36).slice(2, 10)}@dating`;
+  const stamp =
+    new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
-  const lines = [
+  const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//dating//TW//ZH",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    `UID:${uid}`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART;VALUE=DATE:${compact}`,
-    `DTEND;VALUE=DATE:${nextDayCompact(opts.date)}`,
-    `SUMMARY:${escapeIcs(`跟${opts.owner}的約會 ♡`)}`,
-    `DESCRIPTION:${escapeIcs(
-      `約會項目：${opts.summary}\n不能放鳥，不能反悔 ♡`,
-    )}`,
-    "TRANSP:TRANSPARENT",
-    "BEGIN:VALARM",
-    "ACTION:DISPLAY",
-    `DESCRIPTION:${escapeIcs(`明天要跟${opts.owner}約會囉 ♡`)}`,
-    "TRIGGER:-P1D",
-    "END:VALARM",
-    "END:VEVENT",
-    "END:VCALENDAR",
   ];
 
+  for (const range of groupRanges(opts.dates)) {
+    const compact = range.start.replace(/-/g, "");
+    const span = daysBetween(range.start, range.end) + 1;
+    const uid = `${compact}-${Math.random().toString(36).slice(2, 10)}@dating`;
+
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:${uid}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;VALUE=DATE:${compact}`,
+      `DTEND;VALUE=DATE:${shiftCompact(range.start, span)}`,
+      `SUMMARY:${escapeIcs(`跟${opts.owner}的約會 ♡`)}`,
+      `DESCRIPTION:${escapeIcs(
+        `約會項目：${opts.summary}\n不能放鳥，不能反悔 ♡`,
+      )}`,
+      "TRANSP:TRANSPARENT",
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${escapeIcs(`明天要跟${opts.owner}約會囉 ♡`)}`,
+      "TRIGGER:-P1D",
+      "END:VALARM",
+      "END:VEVENT",
+    );
+  }
+
+  lines.push("END:VCALENDAR");
+
   return lines.map(foldIcsLine).join("\r\n") + "\r\n";
+}
+
+/** 驗證並正規化日期陣列：格式正確、去重、排序、限制數量 */
+function normalizeDates(raw: unknown, legacy: unknown): string[] | null {
+  // 陣列是空的也要退回舊欄位，不然 ?dates= 空字串會蓋掉 ?date=
+  const fromRaw = Array.isArray(raw) ? raw : [];
+  const list: unknown[] =
+    fromRaw.length > 0 ? fromRaw : typeof legacy === "string" ? [legacy] : [];
+
+  const keys = list
+    .filter((d): d is string => typeof d === "string")
+    .map((d) => d.trim())
+    .filter((d) => DATE_RE.test(d));
+
+  const unique = [...new Set(keys)].sort();
+  if (unique.length === 0 || unique.length > MAX_DATES) return null;
+
+  // 擋掉 2026-02-30 這種格式對但不存在的日期
+  for (const k of unique) {
+    const [y, m, d] = k.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    if (
+      dt.getUTCFullYear() !== y ||
+      dt.getUTCMonth() !== m - 1 ||
+      dt.getUTCDate() !== d
+    ) {
+      return null;
+    }
+  }
+  return unique;
 }
 
 function notifyHtml(o: {
   owner: string;
   dateText: string;
+  dayCount: number;
   summary: string;
   email: string;
 }): string {
@@ -178,7 +270,11 @@ function notifyHtml(o: {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;color:#4a2436;">
       <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">日期</strong><br/>${escapeHtml(
         o.dateText,
-      )}</td></tr>
+      )}${
+        o.dayCount > 1
+          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe4ef;color:#d6417c;font-size:12px;">${o.dayCount} 天</span>`
+          : ""
+      }</td></tr>
       <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">約會項目</strong><br/>${escapeHtml(
         o.summary,
       )}</td></tr>
@@ -198,6 +294,7 @@ function notifyHtml(o: {
 function confirmHtml(o: {
   owner: string;
   dateText: string;
+  dayCount: number;
   summary: string;
 }): string {
   return `<!doctype html>
@@ -216,7 +313,11 @@ function confirmHtml(o: {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;color:#4a2436;">
       <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">日期</strong><br/>${escapeHtml(
         o.dateText,
-      )}</td></tr>
+      )}${
+        o.dayCount > 1
+          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe4ef;color:#d6417c;font-size:12px;">${o.dayCount} 天</span>`
+          : ""
+      }</td></tr>
       <tr><td style="padding:10px 0;"><strong style="color:#d6417c;">約會項目</strong><br/>${escapeHtml(
         o.summary,
       )}</td></tr>
@@ -303,7 +404,6 @@ app.post("/date", async (c) => {
     return c.json({ ok: false, error: "格式怪怪的" }, 400);
   }
 
-  const date = typeof body.date === "string" ? body.date.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
   const otherText =
     typeof body.otherText === "string" ? body.otherText.trim().slice(0, 120) : "";
@@ -311,8 +411,12 @@ app.post("/date", async (c) => {
     ? body.activities.filter((a): a is string => typeof a === "string")
     : [];
 
-  if (!DATE_RE.test(date)) {
-    return c.json({ ok: false, error: "日期格式不對" }, 400);
+  const dates = normalizeDates(body.dates, body.date);
+  if (!dates) {
+    return c.json(
+      { ok: false, error: `請選 1 到 ${MAX_DATES} 天，而且日期要是有效的` },
+      400,
+    );
   }
   if (!EMAIL_RE.test(email) || email.length > 254) {
     return c.json({ ok: false, error: "Email 格式不對" }, 400);
@@ -341,8 +445,8 @@ app.post("/date", async (c) => {
   const notify = c.env.NOTIFY_EMAIL || DEFAULT_NOTIFY;
 
   const summary = summarize(valid, otherText);
-  const dateText = formatFull(date);
-  const ics = buildIcs({ date, summary, owner });
+  const dateText = formatDates(dates);
+  const ics = buildIcs({ dates, summary, owner });
   const attachments = [
     { filename: "date-with-laihong.ics", content: toBase64(ics) },
   ];
@@ -354,7 +458,7 @@ app.post("/date", async (c) => {
       to: [notify],
       reply_to: email,
       subject: `💗 約會成立：${dateText}`,
-      html: notifyHtml({ owner, dateText, summary, email }),
+      html: notifyHtml({ owner, dateText, dayCount: dates.length, summary, email }),
       attachments,
     });
   } catch (err) {
@@ -368,29 +472,32 @@ app.post("/date", async (c) => {
       to: [email],
       reply_to: notify,
       subject: `💗 妳已經完成跟${owner}的約定`,
-      html: confirmHtml({ owner, dateText, summary }),
+      html: confirmHtml({ owner, dateText, dayCount: dates.length, summary }),
       attachments,
     });
   } catch (err) {
     console.error("confirm mail failed", err);
   }
 
-  const icsUrl = `/api/ics?date=${encodeURIComponent(
-    date,
+  const icsUrl = `/api/ics?dates=${encodeURIComponent(
+    dates.join(","),
   )}&summary=${encodeURIComponent(summary)}`;
 
-  return c.json({ ok: true, summary, dateText, icsUrl });
+  return c.json({ ok: true, summary, dateText, dates, icsUrl });
 });
 
 app.get("/ics", (c) => {
-  const date = (c.req.query("date") ?? "").trim();
-  if (!DATE_RE.test(date)) {
+  // 新版用 ?dates=a,b,c；舊連結的 ?date=a 仍然有效
+  const raw = (c.req.query("dates") ?? "").split(",").filter(Boolean);
+  const dates = normalizeDates(raw, c.req.query("date"));
+  if (!dates) {
     return c.text("bad date", 400);
   }
+
   const summary = (c.req.query("summary") ?? "").slice(0, 200);
   const owner = c.env.OWNER_NAME || DEFAULT_OWNER;
 
-  const ics = buildIcs({ date, summary, owner });
+  const ics = buildIcs({ dates, summary, owner });
 
   return new Response(ics, {
     headers: {

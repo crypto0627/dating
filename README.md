@@ -12,7 +12,9 @@ Cloudflare Pages + Hono + Resend 做的約會邀請網頁。
 
 1. **首頁** — 正中間「要不要跟我約會？ / Yes or No」。
    每按一次 **No**，**Yes** 按鈕就放大一級（而且 No 會越縮越小、越躲越遠），直到你按 Yes。
-2. **安排頁** — 日曆選日期 ＋ 約會項目（健身 / 吃好料 / City walk / 嚕狗狗 / 以上都要 / 其他）＋ 填自己的 Email。
+2. **安排頁** — 日曆**多選日期**（點一下加入、再點一次取消，可以只選一天，也可以選好幾天；
+   連續的日子會在日曆上連成一條，並自動合併顯示成 `9/20 (日) – 9/22 (二)`）
+   ＋ 約會項目（健身 / 吃好料 / City walk / 嚕狗狗 / 以上都要 / 其他）＋ 填自己的 Email。
 3. **送出** — 後端寄出兩封信：
    - 給 `NOTIFY_EMAIL`（預設 `jake0627a1@gmail.com`），`reply-to` 設成對方的信箱
    - 給對方的確認信
@@ -127,6 +129,10 @@ npx wrangler pages deploy dist --project-name dating
 
 | Method | Path | 說明 |
 | --- | --- | --- |
-| `GET` | `/api/health` | 健康檢查 |
-| `POST` | `/api/date` | 送出約會，寄信。Body：`{ date, activities[], otherText, email }` |
-| `GET` | `/api/ics?date=&summary=` | 下載 `.ics`（`text/calendar`，Apple 行事曆可直接開） |
+| `GET` | `/api/health` | 健康檢查 + 設定診斷 |
+| `POST` | `/api/date` | 送出約會，寄信。Body：`{ dates: string[], activities[], otherText, email }` |
+| `GET` | `/api/ics?dates=a,b,c&summary=` | 下載 `.ics`（`text/calendar`，Apple 行事曆可直接開） |
+
+日期一律用 `YYYY-MM-DD`，一次最多 31 天，後端會去重、排序，並擋掉 `2026-02-30`
+這種格式正確但不存在的日期。連續的日子會合併成一個跨日 `VEVENT`，不連續的各自成為一個
+事件放在同一個 `VCALENDAR` 裡。舊版的單數 `date` 欄位與 `?date=` 參數仍然相容。
