@@ -275,7 +275,25 @@ const app = new Hono<{ Bindings: Bindings }>().basePath("/api");
 
 app.use("*", cors({ origin: "*", allowMethods: ["GET", "POST", "OPTIONS"] }));
 
-app.get("/health", (c) => c.json({ ok: true, ts: Date.now() }));
+/**
+ * 健康檢查 / 設定診斷。
+ * 只回傳「有沒有設定」的布林值與寄件者，不會洩漏 key 本身。
+ */
+app.get("/health", (c) =>
+  c.json({
+    ok: true,
+    ts: Date.now(),
+    config: {
+      resendKey: Boolean(c.env.RESEND_API_KEY),
+      resendKeyPrefix: c.env.RESEND_API_KEY
+        ? c.env.RESEND_API_KEY.slice(0, 3)
+        : null,
+      from: c.env.FROM_EMAIL || `${DEFAULT_FROM}（預設值）`,
+      notify: c.env.NOTIFY_EMAIL || `${DEFAULT_NOTIFY}（預設值）`,
+      owner: c.env.OWNER_NAME || `${DEFAULT_OWNER}（預設值）`,
+    },
+  }),
+);
 
 app.post("/date", async (c) => {
   let body: DateBody;

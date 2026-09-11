@@ -41,10 +41,37 @@ npm run pages:dev
 
 | 名稱 | 類型 | 說明 |
 | --- | --- | --- |
-| `RESEND_API_KEY` | **Secret** | Resend API key（`re_...`）。**務必用 Secret，不要用一般變數** |
-| `FROM_EMAIL` | 變數 | 寄件者，需為 Resend 已驗證網域。預設 `來鴻 <crypto0627@jakekuo.com>` |
-| `NOTIFY_EMAIL` | 變數 | 收通知的信箱。預設 `jake0627a1@gmail.com` |
-| `OWNER_NAME` | 變數 | 網站/信件裡顯示的名字。預設 `來鴻` |
+| `RESEND_API_KEY` | **Secret** | Resend API key（`re_...`）。**唯一必填** |
+| `FROM_EMAIL` | 變數（選填） | 寄件者，需為 Resend 已驗證網域。預設 `來鴻 <crypto0627@jakekuo.com>` |
+| `NOTIFY_EMAIL` | 變數（選填） | 收通知的信箱。預設 `jake0627a1@gmail.com` |
+| `OWNER_NAME` | 變數（選填） | 網站/信件裡顯示的名字。預設 `來鴻` |
+
+三個選填變數的預設值直接寫在 `functions/api/[[route]].ts` 上方的 `DEFAULT_*` 常數，
+不設也能正常運作，要改可以改常數或在 Dashboard 覆蓋。
+
+> **刻意不放 `wrangler.toml`**：Cloudflare Pages 一旦在 repo 讀到 Wrangler 設定檔，
+> **Dashboard 上設定的環境變數與 secret 會被忽略**。為了避免 `RESEND_API_KEY`
+> 綁不上去，這個專案不放設定檔，一律用 Dashboard / `wrangler pages secret put`。
+
+### 確認設定有沒有生效
+
+```bash
+curl https://<你的網域>/api/health
+```
+
+```jsonc
+{
+  "ok": true,
+  "config": {
+    "resendKey": true,        // ← false 就是 secret 沒綁上，或綁完沒重新部署
+    "resendKeyPrefix": "re_",
+    "from": "來鴻 <crypto0627@jakekuo.com>（預設值）"
+  }
+}
+```
+
+**改完環境變數一定要重新部署**（Deployments → Retry deployment，或 push 一個 commit），
+Pages 的變數是在部署時注入的，存檔不會套用到已經上線的版本。
 
 ---
 
@@ -61,13 +88,13 @@ npm run pages:dev
    | Build output directory | `dist` |
    | Root directory | （留空） |
 
-4. **Environment variables** → Production **和** Preview 都加：
-   - `RESEND_API_KEY` → 按 **Encrypt**（Secret）
-   - `FROM_EMAIL` = `來鴻 <crypto0627@jakekuo.com>`
-   - `NOTIFY_EMAIL` = `jake0627a1@gmail.com`
-   - `OWNER_NAME` = `來鴻`
-   - `NODE_VERSION` = `22`
+4. **Settings → Variables and Secrets**，Production 加：
+   - `RESEND_API_KEY` → 型別選 **Secret**（必填）
+   - 其餘三個變數不設就吃程式碼裡的預設值
+   - 另外在 **Build** 設定加 `NODE_VERSION` = `22`
 5. **Save and Deploy**。之後每次 push 到 `main` 就會自動重新部署。
+
+> 加完 secret **一定要重新部署**才會生效，然後用 `/api/health` 確認 `resendKey: true`。
 
 > `functions/` 會被 Cloudflare Pages 自動辨識成 Functions，不用額外設定。
 
@@ -80,12 +107,10 @@ npm run build
 npx wrangler pages project create dating --production-branch main   # 第一次才需要
 npx wrangler pages deploy dist --project-name dating
 
-# 設定 secret 與變數
+# 設定 secret（設完要再 deploy 一次才會生效）
 npx wrangler pages secret put RESEND_API_KEY --project-name dating
+npx wrangler pages deploy dist --project-name dating
 ```
-
-`FROM_EMAIL` / `NOTIFY_EMAIL` / `OWNER_NAME` 已寫在 `wrangler.toml` 的 `[vars]`，
-用 Dashboard 部署的話記得手動加。
 
 ---
 
