@@ -135,7 +135,7 @@ export function PlanPage({
             <BearPhoto name="face" mood="love" className="size-8 sm:size-9" />
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            挑個日子，再選你想跟熊抱哥做的事
+            挑個日子，再選你想跟哥做的事
           </p>
         </header>
 
