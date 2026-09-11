@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { BearPaw } from "@/components/Bear";
 import { cn } from "@/lib/utils";
 import {
   WEEKDAY_TC,
@@ -165,7 +166,7 @@ export function Calendar({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "pointer-events-none absolute top-1/2 -z-0 h-9 -translate-y-1/2 bg-[linear-gradient(135deg,#ff8ab5_0%,#ee5d96_50%,#d6417c_100%)] opacity-90",
+                    "pointer-events-none absolute top-1/2 -z-0 h-9 -translate-y-1/2 bg-[linear-gradient(135deg,#ff9dc2_0%,#ef5b8f_50%,#d62d63_100%)] opacity-90",
                     joinLeft && joinRight && "-left-1 -right-1",
                     joinLeft && !joinRight && "-left-1 right-1/2",
                     !joinLeft && joinRight && "left-1/2 -right-1",
@@ -190,11 +191,14 @@ export function Calendar({
                     !isOn &&
                     "ring-primary/40 text-primary ring-1 ring-inset",
                   isOn &&
-                    "bg-[linear-gradient(135deg,#ff8ab5_0%,#ee5d96_50%,#d6417c_100%)] text-white shadow-[0_8px_20px_-8px_rgba(216,68,128,0.8)]",
+                    "bg-[linear-gradient(135deg,#ff9dc2_0%,#ef5b8f_50%,#d62d63_100%)] text-white shadow-[0_8px_20px_-8px_rgba(214,45,99,0.8)]",
                   isOn && !joinLeft && !joinRight && "scale-[1.04]",
                 )}
               >
-                {d.getDate()}
+                {isOn && (
+                  <BearPaw className="pointer-events-none absolute inset-0 m-auto size-7 text-white/25" />
+                )}
+                <span className="relative">{d.getDate()}</span>
               </button>
             </div>
           );

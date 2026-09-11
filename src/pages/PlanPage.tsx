@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { BearFace, BearPaw } from "@/components/Bear";
+import { BearCard } from "@/components/BearCard";
 import { Calendar } from "@/components/Calendar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -23,6 +25,16 @@ export type PlanPayload = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** 小標題前面蓋一個熊掌印 */
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="flex items-center gap-2 text-base font-bold">
+      <BearPaw className="text-primary/60 size-4" />
+      {children}
+    </h2>
+  );
+}
 
 export function PlanPage({
   onSubmit,
@@ -93,7 +105,7 @@ export function PlanPage({
     {
       id: ALL_ID,
       label: "以上都要",
-      emoji: "✨",
+      emoji: "",
       checked: allSelected,
     },
     {
@@ -107,23 +119,29 @@ export function PlanPage({
   return (
     <main className="relative z-10 flex min-h-[100svh] flex-col items-center px-4 py-10 sm:px-6 sm:py-14">
       <div className="animate-fade-up w-full max-w-lg">
-        <header className="mb-7 text-center">
-          <p className="text-primary/70 text-xs tracking-[0.4em] uppercase">
+        <header className="mb-9 flex flex-col items-center text-center">
+          <BearFace
+            mood="love"
+            wiggle
+            className="animate-bear-bob size-20 drop-shadow-[0_12px_22px_rgba(214,45,99,0.3)]"
+          />
+          <p className="text-primary/70 mt-3 text-xs tracking-[0.4em] uppercase">
             Step 2
           </p>
-          <h1 className="text-romance mt-2 font-serif text-3xl font-bold sm:text-4xl">
-            那就來安排一下 ♡
+          <h1 className="text-bear mt-2 flex items-center justify-center gap-2 font-serif text-3xl font-bold sm:text-4xl">
+            那就來安排一下
+            <BearFace mood="love" className="size-8 sm:size-9" />
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">
-            挑個日子，再選你想做的事
+            挑個日子，再選你想跟熊抱哥做的事
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
+        <form onSubmit={handleSubmit} noValidate className="space-y-9">
           {/* 日曆 */}
-          <section className="glass-card rounded-[1.75rem] p-5 sm:p-6">
+          <BearCard>
             <div className="mb-4 flex items-baseline justify-between gap-3">
-              <h2 className="text-base font-bold">選日期</h2>
+              <SectionTitle>選日期</SectionTitle>
               <span
                 className={cn(
                   "text-xs",
@@ -144,8 +162,9 @@ export function PlanPage({
                   {groupRanges(dates).map((r) => (
                     <span
                       key={r.start}
-                      className="text-primary rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium shadow-sm dark:bg-white/10"
+                      className="text-primary inline-flex items-center gap-1.5 rounded-full bg-white/75 px-3 py-1.5 text-xs font-medium shadow-sm dark:bg-white/10"
                     >
+                      <BearPaw className="text-primary/55 size-3" />
                       {r.start === r.end
                         ? formatShort(r.start)
                         : `${formatShort(r.start)} – ${formatShort(r.end)}`}
@@ -165,11 +184,13 @@ export function PlanPage({
             {touched && dateError && (
               <p className="text-destructive mt-3 text-xs">{dateError}</p>
             )}
-          </section>
+          </BearCard>
 
           {/* 約會項目 */}
-          <section className="glass-card rounded-[1.75rem] p-5 sm:p-6">
-            <h2 className="mb-4 text-base font-bold">約會項目</h2>
+          <BearCard>
+            <div className="mb-4">
+              <SectionTitle>約會項目</SectionTitle>
+            </div>
 
             <div className="grid gap-2.5 sm:grid-cols-2">
               {rows.map((row) => (
@@ -177,20 +198,35 @@ export function PlanPage({
                   key={row.id}
                   htmlFor={`act-${row.id}`}
                   className={cn(
-                    "flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3.5 transition-all active:scale-[0.985]",
+                    "relative flex cursor-pointer items-center gap-3 overflow-hidden rounded-2xl border px-4 py-3.5 transition-all active:scale-[0.985]",
                     row.checked
-                      ? "border-primary/35 bg-white/85 shadow-[0_8px_22px_-12px_rgba(216,68,128,0.55)]"
+                      ? "border-primary/35 bg-white/85 shadow-[0_8px_22px_-12px_rgba(214,45,99,0.55)]"
                       : "border-white/70 bg-white/45 hover:bg-white/70",
                     row.id === ALL_ID && "sm:col-span-2",
                   )}
                 >
+                  {/* 選到的項目，右下角會探出一隻熊抱哥 */}
+                  {row.checked && (
+                    <BearFace
+                      mood="love"
+                      className="animate-pop-in pointer-events-none absolute -right-2 -bottom-3 size-11 opacity-25"
+                    />
+                  )}
+
                   <Checkbox
                     id={`act-${row.id}`}
                     checked={row.checked}
                     onCheckedChange={() => toggle(row.id)}
                   />
-                  <span className="text-lg leading-none" aria-hidden="true">
-                    {row.emoji}
+                  <span
+                    className="flex w-6 justify-center text-lg leading-none"
+                    aria-hidden="true"
+                  >
+                    {row.id === ALL_ID ? (
+                      <BearFace mood="happy" className="size-6" />
+                    ) : (
+                      row.emoji
+                    )}
                   </span>
                   <span className="text-[0.95rem] font-medium">
                     {row.label}
@@ -217,15 +253,19 @@ export function PlanPage({
                 {activityError ?? otherError}
               </p>
             )}
-          </section>
+          </BearCard>
 
           {/* Email */}
-          <section className="glass-card rounded-[1.75rem] p-5 sm:p-6">
-            <Label htmlFor="partner-email" className="text-base font-bold">
+          <BearCard>
+            <Label
+              htmlFor="partner-email"
+              className="flex items-center gap-2 text-base font-bold"
+            >
+              <BearPaw className="text-primary/60 size-4" />
               你的 Email
             </Label>
             <p className="text-muted-foreground mt-1 mb-3.5 text-xs leading-relaxed">
-              填你自己的信箱，確認信會寄一份給你，來鴻也會收到通知 ♡
+              填你自己的信箱，確認信會寄一份給你，來鴻也會收到通知
             </p>
             <Input
               id="partner-email"
@@ -240,7 +280,7 @@ export function PlanPage({
             {touched && emailError && (
               <p className="text-destructive mt-2.5 text-xs">{emailError}</p>
             )}
-          </section>
+          </BearCard>
 
           {serverError && (
             <p className="text-destructive rounded-2xl bg-white/70 px-4 py-3 text-center text-sm">
@@ -248,19 +288,33 @@ export function PlanPage({
             </p>
           )}
 
-          <Button
-            type="submit"
-            variant="romance"
-            size="lg"
-            disabled={submitting}
-            className="shine h-14 w-full text-base font-bold"
-          >
-            {submitting ? "寄送中…" : "送出 ♡"}
-          </Button>
+          <div className="space-y-3">
+            <Button
+              type="submit"
+              variant="bear"
+              size="lg"
+              disabled={submitting}
+              className="shine h-14 w-full gap-2.5 text-base font-bold"
+            >
+              <BearPaw className="size-4 text-white/90" />
+              {submitting ? "熊抱哥送信中…" : "送出"}
+              {!submitting && <BearFace mood="love" className="size-5" />}
+            </Button>
 
-          <p className="text-muted-foreground/70 pb-4 text-center text-[0.7rem]">
-            送出之後就不能反悔了喔
-          </p>
+            <div className="flex justify-center gap-0.5" aria-hidden="true">
+              {["happy", "love", "wink", "blush", "smug"].map((m, i) => (
+                <BearFace
+                  key={i}
+                  mood={m as never}
+                  className="size-7 opacity-70"
+                />
+              ))}
+            </div>
+
+            <p className="text-muted-foreground/70 pb-4 text-center text-[0.7rem]">
+              送出之後就不能反悔了喔，熊抱哥都看著
+            </p>
+          </div>
         </form>
       </div>
     </main>

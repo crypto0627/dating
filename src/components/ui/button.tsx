@@ -10,9 +10,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_rgba(216,68,128,0.65)] hover:brightness-105",
-        romance:
-          "text-white shadow-[0_14px_38px_-12px_rgba(216,68,128,0.75)] bg-[linear-gradient(135deg,#ff8ab5_0%,#ee5d96_48%,#d6417c_100%)] hover:brightness-[1.06]",
+          "bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_rgba(214,45,99,0.65)] hover:brightness-105",
+        /** 熊抱哥主按鈕：草莓漸層 */
+        bear: "text-white shadow-[0_14px_38px_-12px_rgba(214,45,99,0.78)] bg-[linear-gradient(135deg,#ff9dc2_0%,#ef5b8f_48%,#d62d63_100%)] hover:brightness-[1.06]",
+        /** 蜂蜜色副按鈕 */
+        honey:
+          "text-[#7a4310] shadow-[0_12px_30px_-14px_rgba(200,130,40,0.7)] bg-[linear-gradient(135deg,#ffe1ad_0%,#ffcb7d_52%,#f7b25a_100%)] hover:brightness-[1.04]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:brightness-105",
         outline:

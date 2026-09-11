@@ -1,10 +1,31 @@
-# 要不要跟我約會？ 💗
+# 要不要跟我約會？ 🧸
 
-Cloudflare Pages + Hono + Resend 做的約會邀請網頁。
+Cloudflare Pages + Hono + Resend 做的約會邀請網頁，**滿滿的熊抱哥**主題。
 
 - **前端**：React 19 · Vite · TypeScript · Tailwind CSS v4 · shadcn/ui
 - **後端**：Hono on Cloudflare Pages Functions (`functions/api/[[route]].ts`)
 - **寄信**：Resend（通知信 + 確認信，都附 `.ics` 行事曆檔）
+
+---
+
+## 主題：熊抱哥 🧸
+
+草莓熊風格，插畫全部是自己畫的 SVG（`src/components/Bear.tsx`），沒有引用任何圖片檔，
+也沒有用到任何既有角色的美術素材：
+
+| 檔案 | 內容 |
+| --- | --- |
+| `src/components/Bear.tsx` | `BearFace`（7 種表情）、`BearPaw`、`Strawberry`、`BearHug`、`Heart` |
+| `src/components/BearBackdrop.tsx` | 背景：草莓奶油漸層 + 滿版熊掌壁紙 + 一路往上飄的熊抱哥 |
+| `src/components/BearCard.tsx` | 上緣長出兩隻熊耳朵的玻璃卡片 |
+| `src/components/Confetti.tsx` | 熊頭 / 熊掌 / 草莓 / 愛心紙花 |
+| `src/index.css` | 配色（`--bear-*` 毛色盤）、熊掌壁紙、`bear-bob` / `ear-wiggle` 等動畫 |
+
+毛色統一走 CSS 變數（`--bear-fur` / `--bear-inner` / `--bear-muzzle` / `--bear-nose`…），
+改一個地方整站就跟著換色，深色模式也有對應的一組。
+
+首頁的熊抱哥會隨著你按 **No** 的次數換表情（傻笑 → 害羞 → 眨眼 → 驚訝 → 得意 → 愛心眼），
+而且每按一次就多召喚一隻熊來勸你，最多 12 隻。
 
 ---
 

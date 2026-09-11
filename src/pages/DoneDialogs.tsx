@@ -1,3 +1,4 @@
+import { BearFace, BearHug, BearPaw } from "@/components/Bear";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,10 +33,10 @@ export function PromiseDialog({
           onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogHeader>
-            <div className="animate-heart-beat mb-1 text-center text-4xl">
-              💌
+            <div className="flex justify-center">
+              <BearHug className="animate-bear-hug h-24 w-28 drop-shadow-[0_12px_22px_rgba(214,45,99,0.32)]" />
             </div>
-            <DialogTitle className="text-romance font-serif text-2xl">
+            <DialogTitle className="text-bear font-serif text-2xl">
               妳已經完成跟來鴻的約定
             </DialogTitle>
             <DialogDescription className="text-[0.95rem]">
@@ -45,23 +46,36 @@ export function PromiseDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="rounded-2xl bg-white/65 px-4 py-3.5 text-center text-sm dark:bg-white/10">
-            <p className="font-semibold">
+          <div className="relative overflow-hidden rounded-2xl bg-white/65 px-4 py-3.5 text-center text-sm dark:bg-white/10">
+            <BearPaw className="text-primary/10 absolute -top-2 -left-3 size-14" />
+            <BearPaw className="text-primary/10 absolute -right-3 -bottom-3 size-12" />
+            <p className="relative font-semibold">
               {dates.length ? formatDatesFull(dates) : ""}
             </p>
-            <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+            <p className="text-muted-foreground relative mt-1 text-xs leading-relaxed">
               {summary}
             </p>
           </div>
 
+          {/* 一排熊抱哥幫你蓋章 */}
+          <div className="flex justify-center gap-0.5" aria-hidden="true">
+            {["love", "happy", "smug", "wink", "blush", "love", "happy"].map(
+              (m, i) => (
+                <BearFace key={i} mood={m as never} className="size-8" />
+              ),
+            )}
+          </div>
+
           <DialogFooter>
             <Button
-              variant="romance"
+              variant="bear"
               size="lg"
               onClick={onNext}
-              className="shine w-full sm:w-auto sm:px-10"
+              className="shine w-full gap-2.5 sm:w-auto sm:px-10"
             >
-              好，我不會放鳥 ♡
+              <BearPaw className="size-4 text-white/90" />
+              好，我不會放鳥
+              <BearFace mood="love" className="size-5" />
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -88,7 +102,13 @@ export function CalendarDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <div className="mb-1 text-center text-4xl">🗓️</div>
+          <div className="flex justify-center">
+            <BearFace
+              mood="wink"
+              wiggle
+              className="animate-bear-bob size-20 drop-shadow-[0_12px_22px_rgba(214,45,99,0.3)]"
+            />
+          </div>
           <DialogTitle className="font-serif text-2xl">
             要加入行事曆嗎？
           </DialogTitle>
@@ -98,12 +118,13 @@ export function CalendarDialog({
         </DialogHeader>
 
         <DialogFooter className="flex-col gap-2 sm:flex-col">
-          <Button asChild variant="romance" size="lg" className="w-full">
+          <Button asChild variant="bear" size="lg" className="w-full gap-2.5">
             <a
               href={icsUrl}
               download="date-with-laihong.ics"
               onClick={() => window.setTimeout(onDone, 1600)}
             >
+              <BearPaw className="size-4 text-white/90" />
               加入 Apple 行事曆
             </a>
           </Button>

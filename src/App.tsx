@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Bubbles } from "@/components/Bubbles";
+import { BearBackdrop } from "@/components/BearBackdrop";
 import { AskPage } from "@/pages/AskPage";
 import { PlanPage, type PlanPayload } from "@/pages/PlanPage";
 import { CalendarDialog, PromiseDialog } from "@/pages/DoneDialogs";
@@ -69,7 +69,7 @@ export default function App() {
 
   return (
     <>
-      <Bubbles />
+      <BearBackdrop />
 
       {step === "ask" ? (
         <AskPage onYes={() => setStep("plan")} />

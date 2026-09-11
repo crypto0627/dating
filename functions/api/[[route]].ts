@@ -200,14 +200,14 @@ function buildIcs(opts: {
       `DTSTAMP:${stamp}`,
       `DTSTART;VALUE=DATE:${compact}`,
       `DTEND;VALUE=DATE:${shiftCompact(range.start, span)}`,
-      `SUMMARY:${escapeIcs(`跟${opts.owner}的約會 ♡`)}`,
+      `SUMMARY:${escapeIcs(`跟${opts.owner}的約會 🧸`)}`,
       `DESCRIPTION:${escapeIcs(
-        `約會項目：${opts.summary}\n不能放鳥，不能反悔 ♡`,
+        `約會項目：${opts.summary}\n不能放鳥，不能反悔 🧸`,
       )}`,
       "TRANSP:TRANSPARENT",
       "BEGIN:VALARM",
       "ACTION:DISPLAY",
-      `DESCRIPTION:${escapeIcs(`明天要跟${opts.owner}約會囉 ♡`)}`,
+      `DESCRIPTION:${escapeIcs(`明天要跟${opts.owner}約會囉 🧸`)}`,
       "TRIGGER:-P1D",
       "END:VALARM",
       "END:VEVENT",
@@ -257,35 +257,36 @@ function notifyHtml(o: {
   email: string;
 }): string {
   return `<!doctype html>
-<html lang="zh-Hant"><body style="margin:0;padding:0;background:#fff5f9;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff5f9;padding:32px 12px;font-family:-apple-system,'Noto Sans TC','PingFang TC','Segoe UI',sans-serif;">
+<html lang="zh-Hant"><body style="margin:0;padding:0;background:#fff7f3;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff7f3;padding:32px 12px;font-family:-apple-system,'Noto Sans TC','PingFang TC','Segoe UI',sans-serif;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 18px 46px -20px rgba(216,68,128,0.42);">
-  <tr><td style="background:linear-gradient(135deg,#ff8ab5 0%,#ee5d96 50%,#d6417c 100%);padding:30px 28px;text-align:center;">
-    <div style="font-size:34px;line-height:1;">💌</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 18px 46px -20px rgba(214,45,99,0.42);">
+  <tr><td style="background:linear-gradient(135deg,#ff9dc2 0%,#ef5b8f 50%,#d62d63 100%);padding:30px 28px;text-align:center;">
+    <div style="font-size:34px;line-height:1;">🧸</div>
     <div style="color:#fff;font-size:20px;font-weight:700;margin-top:10px;">她答應了！</div>
     <div style="color:rgba(255,255,255,0.9);font-size:13px;margin-top:6px;">約定已成立 · 不能放鳥 · 不能反悔</div>
   </td></tr>
   <tr><td style="padding:28px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;color:#4a2436;">
-      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">日期</strong><br/>${escapeHtml(
+      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe3ec;"><strong style="color:#d62d63;">日期</strong><br/>${escapeHtml(
         o.dateText,
       )}${
         o.dayCount > 1
-          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe4ef;color:#d6417c;font-size:12px;">${o.dayCount} 天</span>`
+          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe3ec;color:#d62d63;font-size:12px;">${o.dayCount} 天</span>`
           : ""
       }</td></tr>
-      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">約會項目</strong><br/>${escapeHtml(
+      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe3ec;"><strong style="color:#d62d63;">約會項目</strong><br/>${escapeHtml(
         o.summary,
       )}</td></tr>
-      <tr><td style="padding:10px 0;"><strong style="color:#d6417c;">她的 Email</strong><br/><a href="mailto:${escapeHtml(
+      <tr><td style="padding:10px 0;"><strong style="color:#d62d63;">她的 Email</strong><br/><a href="mailto:${escapeHtml(
         o.email,
-      )}" style="color:#ee5d96;">${escapeHtml(o.email)}</a></td></tr>
+      )}" style="color:#ef5b8f;">${escapeHtml(o.email)}</a></td></tr>
     </table>
     <p style="margin:22px 0 0;font-size:12px;color:#a77e93;line-height:1.7;">直接回覆這封信就會回到她的信箱。<br/>行事曆檔案（.ics）已附在這封信裡。</p>
   </td></tr>
 </table>
-<div style="font-size:11px;color:#c49ab0;margin-top:16px;">${escapeHtml(
+<div style="font-size:15px;letter-spacing:3px;margin-top:14px;">🧸🧸🧸🧸🧸🧸🧸</div>
+<div style="font-size:11px;color:#c49ab0;margin-top:10px;">${escapeHtml(
     o.owner,
   )} · dating</div>
 </td></tr></table></body></html>`;
@@ -298,12 +299,12 @@ function confirmHtml(o: {
   summary: string;
 }): string {
   return `<!doctype html>
-<html lang="zh-Hant"><body style="margin:0;padding:0;background:#fff5f9;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff5f9;padding:32px 12px;font-family:-apple-system,'Noto Sans TC','PingFang TC','Segoe UI',sans-serif;">
+<html lang="zh-Hant"><body style="margin:0;padding:0;background:#fff7f3;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff7f3;padding:32px 12px;font-family:-apple-system,'Noto Sans TC','PingFang TC','Segoe UI',sans-serif;">
 <tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 18px 46px -20px rgba(216,68,128,0.42);">
-  <tr><td style="background:linear-gradient(135deg,#ff8ab5 0%,#ee5d96 50%,#d6417c 100%);padding:32px 28px;text-align:center;">
-    <div style="font-size:36px;line-height:1;">💗</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 18px 46px -20px rgba(214,45,99,0.42);">
+  <tr><td style="background:linear-gradient(135deg,#ff9dc2 0%,#ef5b8f 50%,#d62d63 100%);padding:32px 28px;text-align:center;">
+    <div style="font-size:36px;line-height:1;">🧸</div>
     <div style="color:#fff;font-size:21px;font-weight:700;margin-top:10px;">妳已經完成跟${escapeHtml(
       o.owner,
     )}的約定</div>
@@ -311,21 +312,22 @@ function confirmHtml(o: {
   </td></tr>
   <tr><td style="padding:28px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:15px;color:#4a2436;">
-      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe4ef;"><strong style="color:#d6417c;">日期</strong><br/>${escapeHtml(
+      <tr><td style="padding:10px 0;border-bottom:1px solid #ffe3ec;"><strong style="color:#d62d63;">日期</strong><br/>${escapeHtml(
         o.dateText,
       )}${
         o.dayCount > 1
-          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe4ef;color:#d6417c;font-size:12px;">${o.dayCount} 天</span>`
+          ? `<span style="display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe3ec;color:#d62d63;font-size:12px;">${o.dayCount} 天</span>`
           : ""
       }</td></tr>
-      <tr><td style="padding:10px 0;"><strong style="color:#d6417c;">約會項目</strong><br/>${escapeHtml(
+      <tr><td style="padding:10px 0;"><strong style="color:#d62d63;">約會項目</strong><br/>${escapeHtml(
         o.summary,
       )}</td></tr>
     </table>
-    <p style="margin:22px 0 0;font-size:13px;color:#a77e93;line-height:1.8;">附件的 <code>.ics</code> 可以直接加進 Apple 行事曆 ♡<br/>到時候見 :)</p>
+    <p style="margin:22px 0 0;font-size:13px;color:#a77e93;line-height:1.8;">附件的 <code>.ics</code> 可以直接加進 Apple 行事曆 🧸<br/>到時候見 :)</p>
   </td></tr>
 </table>
-<div style="font-size:11px;color:#c49ab0;margin-top:16px;">${escapeHtml(
+<div style="font-size:15px;letter-spacing:3px;margin-top:14px;">🧸🧸🧸🧸🧸🧸🧸</div>
+<div style="font-size:11px;color:#c49ab0;margin-top:10px;">${escapeHtml(
     o.owner,
   )} · dating</div>
 </td></tr></table></body></html>`;
@@ -457,7 +459,7 @@ app.post("/date", async (c) => {
       from,
       to: [notify],
       reply_to: email,
-      subject: `💗 約會成立：${dateText}`,
+      subject: `🧸 約會成立：${dateText}`,
       html: notifyHtml({ owner, dateText, dayCount: dates.length, summary, email }),
       attachments,
     });
@@ -471,7 +473,7 @@ app.post("/date", async (c) => {
       from,
       to: [email],
       reply_to: notify,
-      subject: `💗 妳已經完成跟${owner}的約定`,
+      subject: `🧸 妳已經完成跟${owner}的約定`,
       html: confirmHtml({ owner, dateText, dayCount: dates.length, summary }),
       attachments,
     });

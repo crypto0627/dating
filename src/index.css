@@ -3,68 +3,93 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ------------------------------------------------------------------
-   shadcn/ui design tokens — 粉紅玫瑰主題 (Tailwind v4 / oklch)
+   shadcn/ui design tokens — 熊抱哥 🧸 草莓熊主題 (Tailwind v4 / oklch)
 ------------------------------------------------------------------- */
 :root {
-  --radius: 1.25rem;
+  --radius: 1.5rem;
 
-  --background: oklch(0.985 0.012 350);
-  --foreground: oklch(0.32 0.055 350);
+  /* 奶油草莓底 */
+  --background: oklch(0.983 0.018 30);
+  --foreground: oklch(0.33 0.07 18);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.32 0.055 350);
+  --card-foreground: oklch(0.33 0.07 18);
 
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.32 0.055 350);
+  --popover-foreground: oklch(0.33 0.07 18);
 
-  --primary: oklch(0.68 0.175 3);
-  --primary-foreground: oklch(0.99 0.008 350);
+  /* 草莓紅粉 */
+  --primary: oklch(0.645 0.195 10);
+  --primary-foreground: oklch(0.99 0.01 30);
 
-  --secondary: oklch(0.955 0.028 348);
-  --secondary-foreground: oklch(0.42 0.11 355);
+  --secondary: oklch(0.955 0.035 25);
+  --secondary-foreground: oklch(0.43 0.13 12);
 
-  --muted: oklch(0.96 0.018 345);
-  --muted-foreground: oklch(0.55 0.05 350);
+  --muted: oklch(0.955 0.025 32);
+  --muted-foreground: oklch(0.55 0.06 18);
 
-  --accent: oklch(0.93 0.045 345);
-  --accent-foreground: oklch(0.38 0.1 355);
+  --accent: oklch(0.925 0.055 22);
+  --accent-foreground: oklch(0.39 0.12 12);
 
-  --destructive: oklch(0.62 0.2 22);
-  --destructive-foreground: oklch(0.99 0.008 350);
+  --destructive: oklch(0.6 0.21 25);
+  --destructive-foreground: oklch(0.99 0.01 30);
 
-  --border: oklch(0.9 0.03 345);
-  --input: oklch(0.92 0.025 345);
-  --ring: oklch(0.72 0.15 355);
+  --border: oklch(0.9 0.04 25);
+  --input: oklch(0.92 0.032 25);
+  --ring: oklch(0.7 0.16 8);
+
+  /* 熊抱哥的毛色盤（給 SVG 插畫用） */
+  --bear-fur: #ffaecb;
+  --bear-fur-dark: #ec7ea9;
+  --bear-inner: #ff87b2;
+  --bear-muzzle: #fff2e4;
+  --bear-nose: #b92f65;
+  --bear-eye: #4f1f34;
+  --bear-cheek: #ff6f9f;
+  --berry: #e63b62;
+  --leaf: #57b96b;
+  --honey: #ffd28a;
 }
 
 .dark {
-  --background: oklch(0.19 0.028 340);
-  --foreground: oklch(0.96 0.015 345);
+  --background: oklch(0.2 0.035 18);
+  --foreground: oklch(0.96 0.018 30);
 
-  --card: oklch(0.24 0.035 340);
-  --card-foreground: oklch(0.96 0.015 345);
+  --card: oklch(0.25 0.042 16);
+  --card-foreground: oklch(0.96 0.018 30);
 
-  --popover: oklch(0.24 0.035 340);
-  --popover-foreground: oklch(0.96 0.015 345);
+  --popover: oklch(0.25 0.042 16);
+  --popover-foreground: oklch(0.96 0.018 30);
 
-  --primary: oklch(0.74 0.16 355);
-  --primary-foreground: oklch(0.2 0.04 350);
+  --primary: oklch(0.74 0.16 8);
+  --primary-foreground: oklch(0.21 0.05 14);
 
-  --secondary: oklch(0.3 0.045 340);
-  --secondary-foreground: oklch(0.95 0.02 345);
+  --secondary: oklch(0.31 0.05 16);
+  --secondary-foreground: oklch(0.95 0.022 28);
 
-  --muted: oklch(0.3 0.035 340);
-  --muted-foreground: oklch(0.72 0.04 345);
+  --muted: oklch(0.31 0.04 16);
+  --muted-foreground: oklch(0.73 0.045 24);
 
-  --accent: oklch(0.34 0.06 345);
-  --accent-foreground: oklch(0.96 0.015 345);
+  --accent: oklch(0.35 0.065 18);
+  --accent-foreground: oklch(0.96 0.018 30);
 
-  --destructive: oklch(0.6 0.19 22);
-  --destructive-foreground: oklch(0.98 0.01 350);
+  --destructive: oklch(0.6 0.19 25);
+  --destructive-foreground: oklch(0.98 0.012 30);
 
   --border: oklch(1 0 0 / 14%);
   --input: oklch(1 0 0 / 18%);
-  --ring: oklch(0.62 0.12 350);
+  --ring: oklch(0.62 0.13 10);
+
+  --bear-fur: #e88bb0;
+  --bear-fur-dark: #c96b92;
+  --bear-inner: #f2749e;
+  --bear-muzzle: #f6e0d0;
+  --bear-nose: #8e2049;
+  --bear-eye: #2c0f1d;
+  --bear-cheek: #ff6f9f;
+  --berry: #cf2f54;
+  --leaf: #4a9e5b;
+  --honey: #e0b06b;
 }
 
 @theme inline {
@@ -88,14 +113,15 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --radius-sm: calc(var(--radius) - 8px);
-  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 10px);
+  --radius-md: calc(var(--radius) - 6px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 6px);
 
   --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-serif: "Playfair Display", "Noto Serif TC", Georgia, serif;
+  --font-serif: "Baloo 2", "Noto Sans TC", ui-rounded, "Hiragino Maru Gothic ProN",
+    "Segoe UI", sans-serif;
 }
 
 @layer base {
@@ -127,47 +153,63 @@
 }
 
 /* ------------------------------------------------------------------
-   背景：粉紅漸層 + 漂浮泡泡
+   背景：草莓奶油漸層 + 滿版熊掌印
 ------------------------------------------------------------------- */
-.romance-bg {
+.bear-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(
+      120% 80% at 12% 8%,
+      rgba(255, 198, 220, 0.95) 0%,
+      rgba(255, 198, 220, 0) 55%
+    ),
+    radial-gradient(
+      110% 75% at 88% 4%,
+      rgba(255, 226, 199, 0.9) 0%,
+      rgba(255, 226, 199, 0) 52%
+    ),
+    radial-gradient(
+      130% 90% at 50% 112%,
+      rgba(255, 176, 203, 0.75) 0%,
+      rgba(255, 176, 203, 0) 62%
+    ),
+    linear-gradient(170deg, #fff8f3 0%, #ffeef3 44%, #ffe1ec 100%);
+}
+
+.dark .bear-bg {
+  background:
+    radial-gradient(
+      120% 80% at 12% 8%,
+      rgba(122, 36, 68, 0.72) 0%,
+      rgba(122, 36, 68, 0) 55%
+    ),
+    radial-gradient(
+      110% 75% at 88% 4%,
+      rgba(104, 48, 48, 0.6) 0%,
+      rgba(104, 48, 48, 0) 52%
+    ),
+    linear-gradient(170deg, #20111a 0%, #2c1420 50%, #1c0d16 100%);
+}
+
+/* 滿滿的熊掌印壁紙 */
+.paw-wallpaper {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background:
-    radial-gradient(
-      120% 80% at 12% 8%,
-      rgba(255, 214, 232, 0.95) 0%,
-      rgba(255, 214, 232, 0) 55%
-    ),
-    radial-gradient(
-      110% 75% at 88% 6%,
-      rgba(255, 233, 214, 0.85) 0%,
-      rgba(255, 233, 214, 0) 52%
-    ),
-    radial-gradient(
-      130% 90% at 50% 110%,
-      rgba(246, 196, 255, 0.7) 0%,
-      rgba(246, 196, 255, 0) 60%
-    ),
-    linear-gradient(170deg, #fff7fb 0%, #ffeef6 42%, #ffe4f0 100%);
+  pointer-events: none;
+  opacity: 0.42;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='%23f2789f' fill-opacity='0.16'%3E%3Cg transform='translate(8 10) rotate(-16 50 50) scale(.3)'%3E%3Cellipse cx='50' cy='67' rx='25' ry='21'/%3E%3Cellipse cx='20' cy='41' rx='9' ry='11'/%3E%3Cellipse cx='38' cy='26' rx='9' ry='11.5'/%3E%3Cellipse cx='62' cy='26' rx='9' ry='11.5'/%3E%3Cellipse cx='80' cy='41' rx='9' ry='11'/%3E%3C/g%3E%3Cg transform='translate(84 82) rotate(20 50 50) scale(.26)'%3E%3Cellipse cx='50' cy='67' rx='25' ry='21'/%3E%3Cellipse cx='20' cy='41' rx='9' ry='11'/%3E%3Cellipse cx='38' cy='26' rx='9' ry='11.5'/%3E%3Cellipse cx='62' cy='26' rx='9' ry='11.5'/%3E%3Cellipse cx='80' cy='41' rx='9' ry='11'/%3E%3C/g%3E%3Cg transform='translate(96 8) rotate(8 50 50) scale(.17)'%3E%3Cpath d='M50 88C22 70 8 56 8 38.5 8 26 18 16 30.5 16 38 16 45 19.6 50 25.4 55 19.6 62 16 69.5 16 82 16 92 26 92 38.5 92 56 78 70 50 88Z'/%3E%3C/g%3E%3Cg transform='translate(14 92) rotate(-10 50 50) scale(.15)'%3E%3Cpath d='M50 88C22 70 8 56 8 38.5 8 26 18 16 30.5 16 38 16 45 19.6 50 25.4 55 19.6 62 16 69.5 16 82 16 92 26 92 38.5 92 56 78 70 50 88Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 150px 150px;
 }
 
-.dark .romance-bg {
-  background:
-    radial-gradient(
-      120% 80% at 12% 8%,
-      rgba(120, 32, 76, 0.7) 0%,
-      rgba(120, 32, 76, 0) 55%
-    ),
-    radial-gradient(
-      110% 75% at 88% 6%,
-      rgba(92, 40, 96, 0.6) 0%,
-      rgba(92, 40, 96, 0) 52%
-    ),
-    linear-gradient(170deg, #1d1017 0%, #2a1220 50%, #1b0d15 100%);
+.dark .paw-wallpaper {
+  opacity: 0.4;
 }
 
-.bubble-field {
+/* 漂浮的熊抱哥 */
+.bear-field {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -175,83 +217,122 @@
   pointer-events: none;
 }
 
-.bubble {
+.floater {
   position: absolute;
-  bottom: -28vh;
-  border-radius: 9999px;
-  background:
-    radial-gradient(
-      circle at 30% 26%,
-      rgba(255, 255, 255, 0.92) 0%,
-      rgba(255, 255, 255, 0.34) 26%,
-      rgba(255, 255, 255, 0) 48%
-    ),
-    linear-gradient(
-      150deg,
-      rgba(255, 176, 209, 0.55) 0%,
-      rgba(255, 208, 228, 0.34) 48%,
-      rgba(255, 240, 246, 0.2) 100%
-    );
-  box-shadow:
-    inset 0 -10px 22px rgba(255, 255, 255, 0.45),
-    inset 0 8px 18px rgba(232, 85, 143, 0.14),
-    0 10px 40px rgba(232, 85, 143, 0.1);
-  backdrop-filter: blur(1px);
-  animation: bubble-rise linear infinite;
+  bottom: -24vh;
+  animation: float-up linear infinite;
   will-change: transform, opacity;
 }
 
-@keyframes bubble-rise {
+@keyframes float-up {
   0% {
-    transform: translate3d(0, 0, 0) scale(0.82);
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.85);
     opacity: 0;
   }
-  8% {
-    opacity: 0.85;
+  9% {
+    opacity: var(--peak, 0.7);
   }
   50% {
-    transform: translate3d(22px, -62vh, 0) scale(1);
+    transform: translate3d(26px, -62vh, 0) rotate(10deg) scale(1);
   }
-  88% {
-    opacity: 0.5;
+  86% {
+    opacity: calc(var(--peak, 0.7) * 0.55);
   }
   100% {
-    transform: translate3d(-14px, -128vh, 0) scale(1.12);
+    transform: translate3d(-18px, -126vh, 0) rotate(-6deg) scale(1.08);
     opacity: 0;
   }
+}
+
+/* ------------------------------------------------------------------
+   熊抱哥的動作
+------------------------------------------------------------------- */
+@keyframes bear-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(1.5deg);
+  }
+}
+
+.animate-bear-bob {
+  animation: bear-bob 3.2s ease-in-out infinite;
+}
+
+@keyframes bear-hug-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  16% {
+    transform: scale(1.08) rotate(-2deg);
+  }
+  32% {
+    transform: scale(1);
+  }
+  48% {
+    transform: scale(1.05) rotate(2deg);
+  }
+  64% {
+    transform: scale(1);
+  }
+}
+
+.animate-bear-hug {
+  animation: bear-hug-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ear-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.bear-ears {
+  transform-origin: 50px 40px;
+  animation: ear-wiggle 2.4s ease-in-out infinite;
 }
 
 /* ------------------------------------------------------------------
    質感小工具
 ------------------------------------------------------------------- */
 .glass-card {
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 252, 250, 0.68);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 18px 50px -18px rgba(216, 68, 128, 0.28),
-    0 2px 10px -4px rgba(216, 68, 128, 0.14);
+    0 18px 50px -18px rgba(200, 60, 110, 0.3),
+    0 2px 10px -4px rgba(200, 60, 110, 0.16);
 }
 
 .dark .glass-card {
-  background: rgba(48, 22, 38, 0.6);
+  background: rgba(54, 26, 38, 0.66);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.08) inset,
     0 18px 50px -18px rgba(0, 0, 0, 0.6);
 }
 
-.text-romance {
-  background: linear-gradient(120deg, #d6376f 0%, #f0669b 45%, #b8538f 100%);
+.text-bear {
+  background: linear-gradient(120deg, #d62d63 0%, #f0578c 48%, #c4356d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.dark .text-romance {
-  background: linear-gradient(120deg, #ffb3d0 0%, #ff8fbb 45%, #e6a7ff 100%);
+.dark .text-bear {
+  background: linear-gradient(120deg, #ffb0cb 0%, #ff8fb5 48%, #ffc79a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -359,6 +440,7 @@
   animation: fade-in 0.28s ease-out both;
 }
 
+/* 熊抱哥紙花 */
 @keyframes confetti-fall {
   0% {
     transform: translate3d(0, -12vh, 0) rotate(0deg);
@@ -368,7 +450,7 @@
     opacity: 1;
   }
   100% {
-    transform: translate3d(var(--drift, 20px), 108vh, 0) rotate(720deg);
+    transform: translate3d(var(--drift, 20px), 108vh, 0) rotate(var(--spin, 720deg));
     opacity: 0;
   }
 }
@@ -376,9 +458,6 @@
 .confetti-piece {
   position: absolute;
   top: 0;
-  width: 9px;
-  height: 14px;
-  border-radius: 2px;
   animation: confetti-fall linear forwards;
   will-change: transform, opacity;
 }
@@ -388,7 +467,7 @@
   width: 6px;
 }
 .soft-scroll::-webkit-scrollbar-thumb {
-  background: rgba(232, 85, 143, 0.3);
+  background: rgba(230, 59, 98, 0.3);
   border-radius: 9999px;
 }
 
