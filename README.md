@@ -42,9 +42,8 @@ Cloudflare Pages + Hono + Resend 做的約會邀請網頁，**滿滿的熊抱哥
 - 建議每張壓到 100 KB 以內，背景會同時飄十幾隻
 - 想加更多張就改 `src/lib/bearAssets.ts` 的 `BEAR_IMAGES`
 
-> `public/bear/` 裡的圖片沒有進 git（見 `.gitignore`），所以放你自己的圖不會被
-> commit 上去。要讓它跟著部署的話，把 `.gitignore` 那一行拿掉即可 —— 但請先確認
-> 你有那些圖的使用權，公開網站跟自己電腦上看是兩回事。
+> `public/bear/` 裡的圖片會跟著 git 一起部署到公開網址。換圖直接覆蓋同名檔案
+> 再 commit 就好；不想讓某張上線的話，把它從這個資料夾移走即可。
 
 毛色統一走 CSS 變數（`--bear-fur` / `--bear-inner` / `--bear-muzzle` / `--bear-nose`…），
 改一個地方整站就跟著換色，深色模式也有對應的一組。
