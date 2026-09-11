@@ -25,6 +25,27 @@ Cloudflare Pages + Hono + Resend 做的約會邀請網頁，**滿滿的熊抱哥
 | `src/components/Confetti.tsx` | 熊頭 / 熊掌 / 草莓 / 愛心紙花 |
 | `src/index.css` | 配色（`--bear-*` 毛色盤）、熊掌壁紙、`bear-bob` / `ear-wiggle` 等動畫 |
 
+### 換成自己的圖片
+
+想用現成的圖（貼圖、自己拍的、自己畫的都可以），把檔案丟進 `public/bear/`，
+命名照下表，網站就會自動改用圖片，**不用改任何程式碼**：
+
+| 檔名 | 用在哪 |
+| --- | --- |
+| `public/bear/bear-hello.png` | 首頁一進來的主角、Step 2 標題、約定成立的對話框 |
+| `public/bear/bear-face.png` | 按鈕裡的小熊、熊抱哥大軍、勾選項目的浮水印 |
+| `public/bear/bear-excited.png` | 按太多次 No 之後的主角、行事曆對話框 |
+
+- 檔案不存在時會自動退回內建的 SVG 插畫，**不會破版、不會出現破圖**
+  （`src/lib/bearAssets.ts` 開場探測一次，全站共用結果，不會送一堆 404）
+- 請用**去背**的 PNG / WebP，不然飄在背景的時候會是一個一個白色方塊
+- 建議每張壓到 100 KB 以內，背景會同時飄十幾隻
+- 想加更多張就改 `src/lib/bearAssets.ts` 的 `BEAR_IMAGES`
+
+> `public/bear/` 裡的圖片沒有進 git（見 `.gitignore`），所以放你自己的圖不會被
+> commit 上去。要讓它跟著部署的話，把 `.gitignore` 那一行拿掉即可 —— 但請先確認
+> 你有那些圖的使用權，公開網站跟自己電腦上看是兩回事。
+
 毛色統一走 CSS 變數（`--bear-fur` / `--bear-inner` / `--bear-muzzle` / `--bear-nose`…），
 改一個地方整站就跟著換色，深色模式也有對應的一組。
 

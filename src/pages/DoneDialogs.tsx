@@ -1,4 +1,5 @@
-import { BearFace, BearHug, BearPaw } from "@/components/Bear";
+import { BearHug, BearPaw } from "@/components/Bear";
+import { BearPhoto } from "@/components/BearPhoto";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,7 +35,14 @@ export function PromiseDialog({
         >
           <DialogHeader>
             <div className="flex justify-center">
-              <BearHug className="animate-bear-hug h-24 w-28 drop-shadow-[0_12px_22px_rgba(214,45,99,0.32)]" />
+              <BearPhoto
+                name="hello"
+                alt="熊抱哥"
+                className="animate-bear-hug h-24 w-28 drop-shadow-[0_12px_22px_rgba(214,45,99,0.32)]"
+                fallback={
+                  <BearHug className="animate-bear-hug h-24 w-28 drop-shadow-[0_12px_22px_rgba(214,45,99,0.32)]" />
+                }
+              />
             </div>
             <DialogTitle className="text-bear font-serif text-2xl">
               妳已經完成跟來鴻的約定
@@ -61,7 +69,12 @@ export function PromiseDialog({
           <div className="flex justify-center gap-0.5" aria-hidden="true">
             {["love", "happy", "smug", "wink", "blush", "love", "happy"].map(
               (m, i) => (
-                <BearFace key={i} mood={m as never} className="size-8" />
+                <BearPhoto
+                  key={i}
+                  name={(["face", "excited", "hello"] as const)[i % 3]}
+                  mood={m as never}
+                  className="size-8"
+                />
               ),
             )}
           </div>
@@ -75,7 +88,7 @@ export function PromiseDialog({
             >
               <BearPaw className="size-4 text-white/90" />
               好，我不會放鳥
-              <BearFace mood="love" className="size-5" />
+              <BearPhoto name="face" mood="love" className="size-5" />
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -103,9 +116,10 @@ export function CalendarDialog({
       >
         <DialogHeader>
           <div className="flex justify-center">
-            <BearFace
+            <BearPhoto
+              name="excited"
               mood="wink"
-              wiggle
+              alt="熊抱哥"
               className="animate-bear-bob size-20 drop-shadow-[0_12px_22px_rgba(214,45,99,0.3)]"
             />
           </div>

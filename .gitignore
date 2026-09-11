@@ -4,6 +4,10 @@ dist
 .vercel
 .output
 
+# 熊抱哥的圖片 —— 預設不進 git，確認有使用權再拿掉這行
+public/bear/*
+!public/bear/.gitkeep
+
 # 本機環境變數 —— 絕對不要進 git
 .dev.vars
 .env

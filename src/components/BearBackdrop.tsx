@@ -1,12 +1,15 @@
 import * as React from "react";
 
-import { BearFace, BearPaw, Heart, Strawberry, type BearMood } from "@/components/Bear";
+import { BearPaw, Heart, Strawberry, type BearMood } from "@/components/Bear";
+import { BearPhoto } from "@/components/BearPhoto";
+import { BEAR_IMAGES, type BearImageName } from "@/lib/bearAssets";
 
 type Kind = "bear" | "paw" | "berry" | "heart";
 
 type Floater = {
   kind: Kind;
   mood: BearMood;
+  shot: BearImageName;
   left: number;
   size: number;
   duration: number;
@@ -15,6 +18,8 @@ type Floater = {
 };
 
 const MOODS: BearMood[] = ["happy", "blush", "wink", "love", "smug", "sleepy"];
+
+const SHOTS = Object.keys(BEAR_IMAGES) as BearImageName[];
 
 /** 熊多一點，其他的當配角 */
 const KINDS: Kind[] = [
@@ -43,6 +48,7 @@ function makeFloaters(count: number): Floater[] {
     list.push({
       kind,
       mood: pick(MOODS),
+      shot: pick(SHOTS),
       left: Math.random() * 100,
       size,
       // 大的慢、小的快，看起來比較有景深
@@ -57,8 +63,17 @@ function makeFloaters(count: number): Floater[] {
   return list;
 }
 
-function FloaterArt({ kind, mood }: { kind: Kind; mood: BearMood }) {
-  if (kind === "bear") return <BearFace mood={mood} className="size-full" />;
+function FloaterArt({
+  kind,
+  mood,
+  shot,
+}: {
+  kind: Kind;
+  mood: BearMood;
+  shot: BearImageName;
+}) {
+  if (kind === "bear")
+    return <BearPhoto name={shot} mood={mood} className="size-full" />;
   if (kind === "berry") return <Strawberry className="size-full" />;
   if (kind === "heart")
     return <Heart className="size-full text-[var(--bear-cheek)]" />;
@@ -92,7 +107,7 @@ export function BearBackdrop({ count = 22 }: { count?: number }) {
               } as React.CSSProperties
             }
           >
-            <FloaterArt kind={f.kind} mood={f.mood} />
+            <FloaterArt kind={f.kind} mood={f.mood} shot={f.shot} />
           </span>
         ))}
       </div>

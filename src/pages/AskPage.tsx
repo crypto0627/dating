@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import { BearFace, BearPaw, type BearMood } from "@/components/Bear";
+import { BearPaw, type BearMood } from "@/components/Bear";
+import { BearPhoto } from "@/components/BearPhoto";
+import type { BearImageName } from "@/lib/bearAssets";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +59,10 @@ export function AskPage({ onYes }: { onYes: () => void }) {
   const tease = TEASES[Math.min(noCount, TEASES.length - 1)];
   const mood = MOODS[Math.min(noCount, MOODS.length - 1)];
 
+  // 有放圖檔的話，按越多次換越激動的那張
+  const shot: BearImageName =
+    noCount === 0 ? "hello" : noCount <= 3 ? "face" : "excited";
+
   // 每按一次 No，就多召喚一隻熊抱哥來幫腔（最多 12 隻）
   const squad = Math.min(noCount, 12);
 
@@ -65,9 +71,10 @@ export function AskPage({ onYes }: { onYes: () => void }) {
       <div className="animate-fade-up flex w-full max-w-md flex-col items-center text-center">
         {/* 主角 */}
         <div className="animate-bear-bob mb-5">
-          <BearFace
+          <BearPhoto
+            name={shot}
             mood={mood}
-            wiggle
+            alt="熊抱哥"
             className="size-28 drop-shadow-[0_14px_26px_rgba(214,45,99,0.32)] sm:size-36"
           />
         </div>
@@ -113,7 +120,7 @@ export function AskPage({ onYes }: { onYes: () => void }) {
           >
             <BearPaw className="size-4 text-white/90" />
             Yes
-            <BearFace mood="love" className="size-[1.15em]" />
+            <BearPhoto name="face" mood="love" className="size-[1.15em]" />
           </Button>
 
           <Button
@@ -137,8 +144,9 @@ export function AskPage({ onYes }: { onYes: () => void }) {
             aria-hidden="true"
           >
             {Array.from({ length: squad }).map((_, i) => (
-              <BearFace
+              <BearPhoto
                 key={i}
+                name={(["face", "excited", "hello"] as const)[i % 3]}
                 mood={i % 3 === 0 ? "smug" : i % 3 === 1 ? "love" : "wink"}
                 className="animate-pop-in size-9"
               />

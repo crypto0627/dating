@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import { BearFace, BearPaw, Heart, Strawberry, type BearMood } from "@/components/Bear";
+import { BearPaw, Heart, Strawberry, type BearMood } from "@/components/Bear";
+import { BearPhoto } from "@/components/BearPhoto";
+import { BEAR_IMAGES, type BearImageName } from "@/lib/bearAssets";
 
 type Kind = "bear" | "paw" | "berry" | "heart" | "chip";
 
@@ -17,6 +19,8 @@ const KINDS: Kind[] = [
 
 const MOODS: BearMood[] = ["happy", "love", "blush", "wink", "wow"];
 
+const SHOTS = Object.keys(BEAR_IMAGES) as BearImageName[];
+
 const CHIP_COLORS = [
   "#ff8ab5",
   "#ee5d96",
@@ -30,6 +34,7 @@ const CHIP_COLORS = [
 type Piece = {
   kind: Kind;
   mood: BearMood;
+  shot: BearImageName;
   color: string;
   left: number;
   delay: number;
@@ -54,6 +59,7 @@ export function Confetti({ count = 80 }: { count?: number }) {
       list.push({
         kind,
         mood: pick(MOODS),
+        shot: pick(SHOTS),
         color: pick(CHIP_COLORS),
         left: Math.random() * 100,
         delay: Math.random() * 1.2,
@@ -106,7 +112,7 @@ export function Confetti({ count = 80 }: { count?: number }) {
         return (
           <span key={i} className="confetti-piece block" style={style}>
             {p.kind === "bear" && (
-              <BearFace mood={p.mood} className="size-full" />
+              <BearPhoto name={p.shot} mood={p.mood} className="size-full" />
             )}
             {p.kind === "berry" && <Strawberry className="size-full" />}
             {p.kind === "heart" && (

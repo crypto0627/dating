@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { BearFace, BearPaw } from "@/components/Bear";
+import { BearPaw } from "@/components/Bear";
+import { BearPhoto } from "@/components/BearPhoto";
 import { BearCard } from "@/components/BearCard";
 import { Calendar } from "@/components/Calendar";
 import { Button } from "@/components/ui/button";
@@ -120,9 +121,10 @@ export function PlanPage({
     <main className="relative z-10 flex min-h-[100svh] flex-col items-center px-4 py-10 sm:px-6 sm:py-14">
       <div className="animate-fade-up w-full max-w-lg">
         <header className="mb-9 flex flex-col items-center text-center">
-          <BearFace
+          <BearPhoto
+            name="hello"
             mood="love"
-            wiggle
+            alt="熊抱哥"
             className="animate-bear-bob size-20 drop-shadow-[0_12px_22px_rgba(214,45,99,0.3)]"
           />
           <p className="text-primary/70 mt-3 text-xs tracking-[0.4em] uppercase">
@@ -130,7 +132,7 @@ export function PlanPage({
           </p>
           <h1 className="text-bear mt-2 flex items-center justify-center gap-2 font-serif text-3xl font-bold sm:text-4xl">
             那就來安排一下
-            <BearFace mood="love" className="size-8 sm:size-9" />
+            <BearPhoto name="face" mood="love" className="size-8 sm:size-9" />
           </h1>
           <p className="text-muted-foreground mt-2 text-sm">
             挑個日子，再選你想跟熊抱哥做的事
@@ -207,7 +209,8 @@ export function PlanPage({
                 >
                   {/* 選到的項目，右下角會探出一隻熊抱哥 */}
                   {row.checked && (
-                    <BearFace
+                    <BearPhoto
+                      name="excited"
                       mood="love"
                       className="animate-pop-in pointer-events-none absolute -right-2 -bottom-3 size-11 opacity-25"
                     />
@@ -223,7 +226,7 @@ export function PlanPage({
                     aria-hidden="true"
                   >
                     {row.id === ALL_ID ? (
-                      <BearFace mood="happy" className="size-6" />
+                      <BearPhoto name="face" mood="happy" className="size-6" />
                     ) : (
                       row.emoji
                     )}
@@ -298,13 +301,16 @@ export function PlanPage({
             >
               <BearPaw className="size-4 text-white/90" />
               {submitting ? "熊抱哥送信中…" : "送出"}
-              {!submitting && <BearFace mood="love" className="size-5" />}
+              {!submitting && (
+                <BearPhoto name="face" mood="love" className="size-5" />
+              )}
             </Button>
 
             <div className="flex justify-center gap-0.5" aria-hidden="true">
               {["happy", "love", "wink", "blush", "smug"].map((m, i) => (
-                <BearFace
+                <BearPhoto
                   key={i}
+                  name={(["face", "excited", "hello"] as const)[i % 3]}
                   mood={m as never}
                   className="size-7 opacity-70"
                 />
