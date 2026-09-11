@@ -39,9 +39,13 @@
   --ring: oklch(0.7 0.16 8);
 
   /* 熊抱哥的毛色盤（給 SVG 插畫用） */
-  --bear-fur: #ffaecb;
-  --bear-fur-dark: #ec7ea9;
+  --bear-fur: #ffa6c6;
+  --bear-fur-light: #ffd3e3;
+  --bear-fur-dark: #ef86ad;
   --bear-inner: #ff87b2;
+  --bear-line: #c2527f;
+  --bear-fur-deep: #e2769d;
+  --bear-plum: #9f4a79;
   --bear-muzzle: #fff2e4;
   --bear-nose: #b92f65;
   --bear-eye: #4f1f34;
@@ -81,8 +85,12 @@
   --ring: oklch(0.62 0.13 10);
 
   --bear-fur: #e88bb0;
+  --bear-fur-light: #f7bed3;
   --bear-fur-dark: #c96b92;
   --bear-inner: #f2749e;
+  --bear-line: #8f3a5e;
+  --bear-fur-deep: #b35b80;
+  --bear-plum: #7c3a5e;
   --bear-muzzle: #f6e0d0;
   --bear-nose: #8e2049;
   --bear-eye: #2c0f1d;
