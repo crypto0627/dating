@@ -1,0 +1,5 @@
+# 複製成 .dev.vars（已被 .gitignore 忽略）供 `wrangler pages dev` 使用
+RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxxxxxx"
+FROM_EMAIL="來鴻 <crypto0627@jakekuo.com>"
+NOTIFY_EMAIL="jake0627a1@gmail.com"
+OWNER_NAME="來鴻"

@@ -1,0 +1,30 @@
+node_modules
+dist
+.wrangler
+.vercel
+.output
+
+# 本機環境變數 —— 絕對不要進 git
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+yarn-error.log*
+*.log
+
+# editor / os
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# tsbuildinfo
+*.tsbuildinfo

@@ -1,0 +1,403 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------
+   shadcn/ui design tokens — 粉紅玫瑰主題 (Tailwind v4 / oklch)
+------------------------------------------------------------------- */
+:root {
+  --radius: 1.25rem;
+
+  --background: oklch(0.985 0.012 350);
+  --foreground: oklch(0.32 0.055 350);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.32 0.055 350);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.32 0.055 350);
+
+  --primary: oklch(0.68 0.175 3);
+  --primary-foreground: oklch(0.99 0.008 350);
+
+  --secondary: oklch(0.955 0.028 348);
+  --secondary-foreground: oklch(0.42 0.11 355);
+
+  --muted: oklch(0.96 0.018 345);
+  --muted-foreground: oklch(0.55 0.05 350);
+
+  --accent: oklch(0.93 0.045 345);
+  --accent-foreground: oklch(0.38 0.1 355);
+
+  --destructive: oklch(0.62 0.2 22);
+  --destructive-foreground: oklch(0.99 0.008 350);
+
+  --border: oklch(0.9 0.03 345);
+  --input: oklch(0.92 0.025 345);
+  --ring: oklch(0.72 0.15 355);
+}
+
+.dark {
+  --background: oklch(0.19 0.028 340);
+  --foreground: oklch(0.96 0.015 345);
+
+  --card: oklch(0.24 0.035 340);
+  --card-foreground: oklch(0.96 0.015 345);
+
+  --popover: oklch(0.24 0.035 340);
+  --popover-foreground: oklch(0.96 0.015 345);
+
+  --primary: oklch(0.74 0.16 355);
+  --primary-foreground: oklch(0.2 0.04 350);
+
+  --secondary: oklch(0.3 0.045 340);
+  --secondary-foreground: oklch(0.95 0.02 345);
+
+  --muted: oklch(0.3 0.035 340);
+  --muted-foreground: oklch(0.72 0.04 345);
+
+  --accent: oklch(0.34 0.06 345);
+  --accent-foreground: oklch(0.96 0.015 345);
+
+  --destructive: oklch(0.6 0.19 22);
+  --destructive-foreground: oklch(0.98 0.01 350);
+
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.62 0.12 350);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-serif: "Playfair Display", "Noto Serif TC", Georgia, serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    margin: 0;
+    min-height: 100svh;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   背景：粉紅漸層 + 漂浮泡泡
+------------------------------------------------------------------- */
+.romance-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      120% 80% at 12% 8%,
+      rgba(255, 214, 232, 0.95) 0%,
+      rgba(255, 214, 232, 0) 55%
+    ),
+    radial-gradient(
+      110% 75% at 88% 6%,
+      rgba(255, 233, 214, 0.85) 0%,
+      rgba(255, 233, 214, 0) 52%
+    ),
+    radial-gradient(
+      130% 90% at 50% 110%,
+      rgba(246, 196, 255, 0.7) 0%,
+      rgba(246, 196, 255, 0) 60%
+    ),
+    linear-gradient(170deg, #fff7fb 0%, #ffeef6 42%, #ffe4f0 100%);
+}
+
+.dark .romance-bg {
+  background:
+    radial-gradient(
+      120% 80% at 12% 8%,
+      rgba(120, 32, 76, 0.7) 0%,
+      rgba(120, 32, 76, 0) 55%
+    ),
+    radial-gradient(
+      110% 75% at 88% 6%,
+      rgba(92, 40, 96, 0.6) 0%,
+      rgba(92, 40, 96, 0) 52%
+    ),
+    linear-gradient(170deg, #1d1017 0%, #2a1220 50%, #1b0d15 100%);
+}
+
+.bubble-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -28vh;
+  border-radius: 9999px;
+  background:
+    radial-gradient(
+      circle at 30% 26%,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(255, 255, 255, 0.34) 26%,
+      rgba(255, 255, 255, 0) 48%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(255, 176, 209, 0.55) 0%,
+      rgba(255, 208, 228, 0.34) 48%,
+      rgba(255, 240, 246, 0.2) 100%
+    );
+  box-shadow:
+    inset 0 -10px 22px rgba(255, 255, 255, 0.45),
+    inset 0 8px 18px rgba(232, 85, 143, 0.14),
+    0 10px 40px rgba(232, 85, 143, 0.1);
+  backdrop-filter: blur(1px);
+  animation: bubble-rise linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.82);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(22px, -62vh, 0) scale(1);
+  }
+  88% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(-14px, -128vh, 0) scale(1.12);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   質感小工具
+------------------------------------------------------------------- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(22px) saturate(1.5);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 18px 50px -18px rgba(216, 68, 128, 0.28),
+    0 2px 10px -4px rgba(216, 68, 128, 0.14);
+}
+
+.dark .glass-card {
+  background: rgba(48, 22, 38, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 18px 50px -18px rgba(0, 0, 0, 0.6);
+}
+
+.text-romance {
+  background: linear-gradient(120deg, #d6376f 0%, #f0669b 45%, #b8538f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-romance {
+  background: linear-gradient(120deg, #ffb3d0 0%, #ff8fbb 45%, #e6a7ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -140%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-18deg);
+  animation: shine-sweep 3.6s ease-in-out infinite;
+}
+
+@keyframes shine-sweep {
+  0%,
+  62% {
+    left: -140%;
+  }
+  100% {
+    left: 160%;
+  }
+}
+
+@keyframes heart-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.16);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.1);
+  }
+  56% {
+    transform: scale(1);
+  }
+}
+
+.animate-heart-beat {
+  animation: heart-beat 1.8s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.28s ease-out both;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 20px), 108vh, 0) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: absolute;
+  top: 0;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+  will-change: transform, opacity;
+}
+
+/* 滾動條 */
+.soft-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.soft-scroll::-webkit-scrollbar-thumb {
+  background: rgba(232, 85, 143, 0.3);
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

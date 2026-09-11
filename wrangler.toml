@@ -1,0 +1,13 @@
+name = "dating"
+compatibility_date = "2025-02-14"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# 注意：RESEND_API_KEY 是 secret，不要寫在這裡。
+# 用 `npx wrangler pages secret put RESEND_API_KEY --project-name dating`
+# 或在 Cloudflare Dashboard → Settings → Variables and Secrets 設定。
+
+[vars]
+FROM_EMAIL = "來鴻 <crypto0627@jakekuo.com>"
+NOTIFY_EMAIL = "jake0627a1@gmail.com"
+OWNER_NAME = "來鴻"
